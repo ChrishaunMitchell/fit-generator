@@ -28,11 +28,28 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
+.back-button {
+  text-align: left;
+  display:flex;
+  margin: 2rem;
+}
+
+.image-view {
+  width: 25%;
+  padding: 3%;
+}
+
+.input-group {
+  width: auto;
+  display: inline;
+  margin: 1rem;
+}
+
+/* @keyframes App-logo-spin {
   from {
-    transform: rotate(0deg);
+    transform: rotate(-10deg);
   }
   to {
-    transform: rotate(360deg);
+    transform: rotate(10deg);
   }
-}
+} */
