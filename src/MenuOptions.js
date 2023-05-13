@@ -13,8 +13,7 @@ function MenuOptions(){
         <>
         <h1>We'll list options</h1>
         <button onClick={(e)=> {updateMenuOption(e)}}> Add New Item</button>
-        <button onClick={(e)=> {updateMenuOption(e)}}> View All Items</button>
-        <button onClick={(e)=> {updateMenuOption(e)}}> View 1 Item</button>
+        <button onClick={(e)=> {updateMenuOption(e)}}> View Items</button>
         <button onClick={(e)=> {updateMenuOption(e)}}> Generate Fit</button>
         </>
     );

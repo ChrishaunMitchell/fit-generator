@@ -2,29 +2,51 @@ import {React, useContext, useState, useRef} from 'react';
 import { ItemContext } from "./ItemContext";
 import { useEffect } from 'react';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
-import { Modal } from 'react-bootstrap';
-import { render } from '@testing-library/react';
 import AnyAttribute, { asObject, asString } from 'react-any-attr';
 import ItemSelection from './ItemSelection';
+import ImageModal from './ImageModal';
+import ResetButton from './ResetButton';
+import { ReactDOM } from 'react';
 
 function ViewItem() {
-    const {itemValues, displayPics, setdisplayPics} = useContext(ItemContext);
-    const [info, setinfo] = useState({Id:1});
-    const [show, setShow] = useState(false);
+    const {info, setinfo, show, setShow, itemValues, displayPics, setdisplayPics} = useContext(ItemContext);
+    
+    const currentPic = useRef(0);
+    const QList = useRef("");
 
-    const handleClose = () => setShow(false);
     const handleShow = (image) => {
         
         console.log(image);
         console.log(image.objectasObject);
         setinfo(image.objectAsObject.data);
+        currentPic.current = image.alt;
         setShow(true);
+        
         console.log(info);
     }
     useEffect(()=>{
+        console.log('calling useeffect');
+        UpdateDisplay("");
+    },[itemValues])
+    useEffect(()=>{
+        console.log('calling useeffect');
+        UpdateDisplay(QList.current);
+    },[show])
+    useEffect(()=>{
         setdisplayPics();
      },[]);
+    function UpdateDisplay(qString) {
+        QList.current = qString;
+        axios.get(`https://x3c6sahq93.execute-api.us-east-1.amazonaws.com/items${qString}`)
+        .then(response => {
+          let picList = [];
+          response.data.forEach(s => {
+            picList.push(s);
+          });
+          console.log(picList)
+          setdisplayPics(picList);
+        });
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Make api call");
@@ -53,19 +75,13 @@ function ViewItem() {
             if(qString!="?") { qString += "&"; }
             qString += "designer="+itemValues.designer;
         }
-        axios.get(`https://x3c6sahq93.execute-api.us-east-1.amazonaws.com/items${qString}`)
-        .then(response => {
-          let picList = [];
-          response.data.forEach(s => {
-            picList.push(s);
-          });
-          console.log(picList)
-          setdisplayPics(picList);
-        });
+        UpdateDisplay(qString);
       };
     return (
         <>
+        <ResetButton/>
         <ItemSelection submitButton={handleSubmit} submitText='Search'/>
+        
         {displayPics ? displayPics.map(image => (
             <AnyAttribute
             attributes={{objectAsObject: asObject({data: image})}}>
@@ -73,29 +89,7 @@ function ViewItem() {
             onClick={(image)=> handleShow(image.target)}/>
             </AnyAttribute>
         )) : 'No images available'}
-        <Modal show={show} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>{info.Id}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal! <br></br>
-        Type: {info.type} <br></br>
-        Subtype: {info.type2} <br></br>
-        Color: {info.color1} <br></br>
-        {info.color2 ? 'Color2: '+info.color2 : undefined} <br></br>
-        Designer: {info.designer ? 'Yes' : 'No'} <br></br>
-        {info.solid ? 'Plain' : 'Graphics/Pattern'} <br></br>
-        TimesWorn: {info.timesWorn} <br></br>
-
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Delete Item
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        <ImageModal show={show} imageID={currentPic.current}/>
         <h2>We'll view images</h2>
         </>
     )

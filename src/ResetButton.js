@@ -1,17 +1,15 @@
 import {React, useContext} from "react";
 import { ItemContext } from "./ItemContext";
-import ResetButton from "./ResetButton";
 
-function BackButton() {
+function ResetButton() {
     const {resetitemValues, setshowMenu} = useContext(ItemContext);
     return(
         <>
-        <button className='back-button' onClick={() => {
-            setshowMenu('Main');
+        <button className='reset-button' onClick={() => {
             resetitemValues();
-            }}>Back</button>
+            }}>Reset Filters</button>
         </>
     )
 }
 
-export default BackButton;
+export default ResetButton;

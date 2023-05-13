@@ -33,6 +33,11 @@
   display:flex;
   margin: 2rem;
 }
+.reset-button {
+  text-align: center;
+  display:flex;
+  margin: 2rem;
+}
 
 .image-view {
   width: 25%;
