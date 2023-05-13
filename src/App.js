@@ -42,6 +42,7 @@ function App() {
     timesWorn: 0,
     dripLevel: 3,
     pic: ""})
+    setdisplayPics([]);
   }
 
   
