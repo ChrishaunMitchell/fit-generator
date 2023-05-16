@@ -8,6 +8,8 @@ import AddItem from './AddItem';
 import ViewItem from './ViewItem';
 import BackButton from './BackButton';
 import GenerateFit from './GenerateFit';
+import { S3Context } from './S3Context';
+import { DeleteObjectsCommand, PutObjectCommand, GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 function App() {
   const [itemValues, setitemValues] = useState({
@@ -44,16 +46,31 @@ function App() {
     pic: ""})
     setdisplayPics([]);
   }
-
+  const FitGenClient = new S3Client({
+    region:"us-east-1",
+    credentials:{
+        accessKeyId:'AKIA3ZK4W32CBPIRW7DG',
+        secretAccessKey:'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'
+    }})
+  function validItem() {
+    const {type,type2,color1,color2,pic} = itemValues;
+    if(type && type2 && color1 && color2 && pic) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   
   return (
     <div className="App">
-      <ItemContext.Provider value={{info, setinfo, show, setShow, setshowMenu,itemValues, setitemValues, displayPics, setdisplayPics,resetitemValues}}>
+      <S3Context.Provider value={{FitGenClient}}>
+      <ItemContext.Provider value={{validItem, info, setinfo, show, setShow, setshowMenu,itemValues, setitemValues, displayPics, setdisplayPics,resetitemValues}}>
         {showMenu=="Main" ? <MenuOptions /> : <BackButton/>}
         {showMenu=="Add New Item" ? <AddItem/> :
         showMenu=="View Items" ? <ViewItem/> : 
         showMenu=="Generate Fit" ? <GenerateFit/> : undefined}
       </ItemContext.Provider>
+      </S3Context.Provider>
     </div>
   );
 }

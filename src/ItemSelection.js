@@ -46,15 +46,10 @@ function ItemSelection(props) {
           <label name="solid">Solid</label>
           <input type="checkbox" id="solid" value={itemValues.solid} onChange={() => {setitemValues({...itemValues, solid: !itemValues.solid})}} />
         </div>
-        {props.submitText=='Search' ? '' :
-        <div className="input-group">
-          <label name="picurl">Pic URL</label>
-          <input type="url" id="picurl" value={itemValues.pic} onChange={(e) => {setitemValues({...itemValues, pic: e.target.value})}} />
-        </div>
-        }
+        {props.submitText=='Search' ?
         <button type="submit" className="submit-btn">
             {props.submitText}
-        </button>
+        </button> :''}
       </form>
       </>
       )
