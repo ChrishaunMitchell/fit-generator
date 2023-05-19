@@ -6,7 +6,7 @@ import DropdownItems from "./DropdownItems";
 import {TypeOptions, TopOptions, BottomOptions, ShoeOptions, AccessoryOptions, ColorOptions} from "./ItemOptions";
 
 function ItemSelection(props) {
-    const { setitemValues, itemValues, displayPics, setdisplayPics} = useContext(ItemContext);
+    const { setitemValues, itemValues} = useContext(ItemContext);
     function TypeChange(type) {
     
         if(type) {
@@ -23,10 +23,10 @@ function ItemSelection(props) {
         <Dropdown isSearchable placeHolder="Type..." options={TypeOptions}
           onChange={(value) => TypeChange(value)}
         />
-        {itemValues.type=="Top" ? <DropdownItems options={TopOptions}/> : 
-        itemValues.type=="Bottom" ? <DropdownItems options={BottomOptions}/> : 
-        itemValues.type=="Shoes" ? <DropdownItems options={ShoeOptions}/> : 
-        itemValues.type=="Accessory" ? <DropdownItems options={AccessoryOptions}/> : undefined}
+        {itemValues.type==="Top" ? <DropdownItems options={TopOptions}/> : 
+        itemValues.type==="Bottom" ? <DropdownItems options={BottomOptions}/> : 
+        itemValues.type==="Shoes" ? <DropdownItems options={ShoeOptions}/> : 
+        itemValues.type==="Accessory" ? <DropdownItems options={AccessoryOptions}/> : undefined}
 
         <Dropdown isSearchable isMulti placeHolder="Color1..." options={ColorOptions}
           onChange={(value) => value[0] ? setitemValues({...itemValues, color1:value[0].value}):
@@ -46,14 +46,13 @@ function ItemSelection(props) {
           <label name="solid">Solid</label>
           <input type="checkbox" id="solid" value={itemValues.solid} onChange={() => {setitemValues({...itemValues, solid: !itemValues.solid})}} />
         </div>
-        {props.submitText=='Search' ?
+        {props.submitText==='Search' ?
         <button type="submit" className="submit-btn">
             {props.submitText}
         </button> :''}
       </form>
       </>
       )
-
 }
 
 export default ItemSelection;

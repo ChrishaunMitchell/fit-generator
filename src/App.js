@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect} from "react";
 
@@ -9,9 +8,44 @@ import ViewItem from './ViewItem';
 import BackButton from './BackButton';
 import GenerateFit from './GenerateFit';
 import { S3Context } from './S3Context';
-import { DeleteObjectsCommand, PutObjectCommand, GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { S3Client } from "@aws-sdk/client-s3";
+import jwt_decode from "jwt-decode";
 
 function App() {
+  const [user, setUser] = useState({});
+  function handleCallbackResponse(response){
+    console.log("Encoded JWT ID token" + response.credential);
+    var userObject = jwt_decode(response.credential);
+    console.log(userObject);
+    setUser(userObject);
+    localStorage.setItem("User",JSON.stringify({"email":userObject.email,"name":userObject.name,"picture":userObject.picture}));
+    document.getElementById("signInDiv").hidden = true;
+  }
+  function handleSignOut(event) {
+    setUser({});
+    localStorage.removeItem("User");
+    document.getElementById("signInDiv").hidden = false;
+    resetitemValues();
+  }
+  useEffect(()=>{
+    /* global google google.accounts.id.initialize()*/
+    google.accounts.id.initialize({
+      client_id:'37741548644-06all6kdav6lvucqek6bnlae0q928c6a.apps.googleusercontent.com',
+      callback: handleCallbackResponse
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("signInDiv"),
+      {them: "outline", size: "large"}
+    )
+    const loadUser = JSON.parse(localStorage.getItem("User"));
+    console.log(loadUser);
+    if(loadUser){
+      setUser(loadUser)
+      document.getElementById("signInDiv").hidden = true;
+    } else {
+      google.accounts.id.prompt();
+    }
+  },[]);
   const [itemValues, setitemValues] = useState({
     Id: Math.floor(Math.random() * 9000),
     type: "",
@@ -63,14 +97,25 @@ function App() {
   
   return (
     <div className="App">
-      <S3Context.Provider value={{FitGenClient}}>
+      <div id="signInDiv"></div>
+      { Object.keys(user).length===0 ? 
+      <div>
+      <h3>You must login first</h3>
+      </div> :
+      <div>
+        <img src={user.picture}></img>
+        <h3>{user.name}</h3>
+        <button onClick={(e) => handleSignOut(e)}>Sign Out</button>
+      <S3Context.Provider value={{user,FitGenClient}}>
       <ItemContext.Provider value={{validItem, info, setinfo, show, setShow, setshowMenu,itemValues, setitemValues, displayPics, setdisplayPics,resetitemValues}}>
-        {showMenu=="Main" ? <MenuOptions /> : <BackButton/>}
-        {showMenu=="Add New Item" ? <AddItem/> :
-        showMenu=="View Items" ? <ViewItem/> : 
-        showMenu=="Generate Fit" ? <GenerateFit/> : undefined}
+        {showMenu==="Main" ? <MenuOptions /> : <BackButton/>}
+        {showMenu==="Add New Item" ? <AddItem/> :
+        showMenu==="View Items" ? <ViewItem/> : 
+        showMenu==="Generate Fit" ? <GenerateFit/> : undefined}
       </ItemContext.Provider>
       </S3Context.Provider>
+      </div>
+      }
     </div>
   );
 }

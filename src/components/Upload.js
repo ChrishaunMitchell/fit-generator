@@ -1,31 +1,31 @@
-import React,{useState, useContext, useEffect} from 'react';
-import { UploaderComponent } from '@syncfusion/ej2-react-inputs';
+import React,{useState, useContext} from 'react';
 import axios from 'axios';
 import './Upload.css';
 import { S3Context } from '../S3Context';
 import { ItemContext } from '../ItemContext';
-import { DeleteObjectsCommand, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 const Upload = (props) => {
-    const {FitGenClient} = useContext(S3Context);
+    const {user, FitGenClient} = useContext(S3Context);
     const {validItem, itemValues, setitemValues} = useContext(ItemContext);
     // State to keep the selected file
     const [selectedFile, setSelectedFile] = useState(null);
-
     // State to keep the upload status
     const [status, setStatus] = useState({ statusCode: 0, message: 'Ready to upload' });
 
-    // Getting file details using select event in the File upload component
-    const onFileSelect = async(args) => {
+    const onFileSelect= async(event) =>{
         setSelectedFile(null);
-        const file = args.event.target.files;
+        const file = event.target.files;
+        if(!file) return;
         setSelectedFile(file[0]);
+        console.log(selectedFile);
+        let newID= Date.now() + Math.floor(Math.random() * 9000);
+        let newPic= `https://fit-generator-dev.s3.amazonaws.com/Images/${user.email}/${newID}`;
+        setitemValues({...itemValues, Id: newID, pic: newPic})
         setStatus({ statusCode: 0, message:'Ready to upload'});
          
     }
-    function Add(Data,newID,newPic){
-        Data.Id=newID;
-        Data.pic=newPic;
+    function Add(Data){
         console.log("Make api call");
         axios.post(`https://x3c6sahq93.execute-api.us-east-1.amazonaws.com/items`, Data)
         .then(response => {
@@ -36,25 +36,18 @@ const Upload = (props) => {
 
     // Click action for Upload file button
     const onUploadClick = async() => {
-        let newID= Date.now() + Math.floor(Math.random() * 9000);
-        let newPic= `https://fit-generator-dev.s3.amazonaws.com/Images/${newID}`;
-        console.log(newID);
-        setitemValues({...itemValues, Id: newID, pic: newPic}) //Date+ rand num
         const Data = itemValues;
-        console.log(Data,newID,newPic);
+        console.log(Data);
         if(validItem()){
             console.log('clicked upload');
-            Add(Data,newID,newPic);
+            Add(Data);
             const command = new PutObjectCommand({
                 Body: selectedFile,
                 Bucket: "fit-generator-dev",
-                Key: `Images/${newID}`
+                Key: `Images/${user.email}/${itemValues.Id}`
             });
             try {
-                const response = await FitGenClient.send(command).then((response)=> {
-                    console.log(response);
-                    
-                });
+                await FitGenClient.send(command);
                 setStatus({ statusCode: 1, message: 'File uploaded successfully'});
             }
             catch {
@@ -94,8 +87,7 @@ const Upload = (props) => {
 
     return (
         <div className="control-wrapper">
-            {/* Rendering the Syncfusion file upload component */}
-            {selectedFile && (
+            {selectedFile && selectedFile.name && (
                 <div>
                 <img
                     alt="not found"
@@ -106,17 +98,20 @@ const Upload = (props) => {
                 <button onClick={() => setSelectedFile(null)}>Remove</button>
                 </div>
             )}
-            <UploaderComponent
-                id="fileUpload"
-                selected={onFileSelect}
-                multiple={false}
-                showFileList={false}
-            ></UploaderComponent>
+            <input
+                type="file"
+                accept='image/*'
+                name="myImage"
+                onChange={(event) => {
+                console.log(event.target.files[0]);
+                onFileSelect(event);
+                }}
+            />
 
             {/* Rendering the file list after selecting the file */}
-            { selectedFile !== null && createFileList() }
+            { selectedFile !== null && selectedFile !== undefined && createFileList() }
             
-            <button className='upload-btn e-btn e-primary' disabled={!(selectedFile != null && !status.statusCode)} onClick = {onUploadClick}>Upload Item</button>
+            <button className='upload-btn e-btn e-primary' disabled={!(selectedFile !== null && !status.statusCode)} onClick = {onUploadClick}>Upload Item</button>
         </div>
     );
 }

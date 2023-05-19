@@ -2,7 +2,7 @@ import {React, useContext} from "react";
 import { ItemContext } from "./ItemContext";
 
 function ResetButton() {
-    const {resetitemValues, setshowMenu} = useContext(ItemContext);
+    const {resetitemValues} = useContext(ItemContext);
     return(
         <>
         <button className='reset-button' onClick={() => {

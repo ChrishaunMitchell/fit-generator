@@ -1,12 +1,11 @@
-import {React, useContext, useState, useRef} from 'react';
+import {React, useContext, useRef} from 'react';
 import { ItemContext } from "./ItemContext";
 import { useEffect } from 'react';
 import axios from 'axios';
-import AnyAttribute, { asObject, asString } from 'react-any-attr';
+import AnyAttribute, { asObject} from 'react-any-attr';
 import ItemSelection from './ItemSelection';
 import ImageModal from './ImageModal';
 import ResetButton from './ResetButton';
-import { ReactDOM } from 'react';
 
 function ViewItem() {
     const {info, setinfo, show, setShow, itemValues, displayPics, setdisplayPics} = useContext(ItemContext);
@@ -25,15 +24,16 @@ function ViewItem() {
         console.log(info);
     }
     useEffect(()=>{
-        console.log('calling useeffect');
         UpdateDisplay("");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[itemValues])
     useEffect(()=>{
-        console.log('calling useeffect');
         UpdateDisplay(QList.current);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[show])
     useEffect(()=>{
         setdisplayPics();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
      },[]);
     function UpdateDisplay(qString) {
         QList.current = qString;
@@ -52,27 +52,27 @@ function ViewItem() {
         console.log("Make api call");
         let qString = itemValues ? "?" : "";
         if(itemValues.type) {
-            if(qString!="?") { qString += "&"; }
+            if(qString!=="?") { qString += "&"; }
             qString += "type="+itemValues.type;
         }
         if(itemValues.type2) {
-            if(qString!="?") { qString += "&"; }
+            if(qString!=="?") { qString += "&"; }
             qString += "type2="+itemValues.type2;
         }
         if(itemValues.color1) {
-            if(qString!="?") { qString += "&"; }
+            if(qString!=="?") { qString += "&"; }
             qString += "color1="+itemValues.color1;
         }
         if(itemValues.color2) {
-            if(qString!="?") { qString += "&"; }
+            if(qString!=="?") { qString += "&"; }
             qString += "color2="+itemValues.color2;
         }
         if(itemValues.solid) {
-            if(qString!="?") { qString += "&"; }
+            if(qString!=="?") { qString += "&"; }
             qString += "solid="+itemValues.solid;
         }
         if(itemValues.designer) {
-            if(qString!="?") { qString += "&"; }
+            if(qString!=="?") { qString += "&"; }
             qString += "designer="+itemValues.designer;
         }
         UpdateDisplay(qString);
