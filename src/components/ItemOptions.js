@@ -1,6 +1,4 @@
-import React from "react";
 
-// export const ItemOptions = {
 export const ColorOptions = [
     { value: "Black", label: "Black" },
     { value: "White", label: "White" },
@@ -42,4 +40,3 @@ export const AccessoryOptions = [
     {value: "Glasses", label: "Glasses"},
     {value: "Other", label: "Other"}
     ];
-    // }

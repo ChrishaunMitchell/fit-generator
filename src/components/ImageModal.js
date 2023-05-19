@@ -1,10 +1,10 @@
 import {React, useContext, useEffect} from 'react';
-import { ItemContext } from "./ItemContext";
+import { ItemContext } from "../Context/ItemContext";
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
-import { S3Context } from './S3Context';
+import { S3Context } from '../Context/S3Context';
     
 function ImageModal(props){
   const {user, FitGenClient} = useContext(S3Context);
@@ -29,7 +29,7 @@ function ImageModal(props){
   };
 
   return(
-      <Modal show={props.show} onHide={handleClose} centered>
+      <Modal show={props.show} onHide={handleClose} centered fade={false}>
       <Modal.Header closeButton>
         <Modal.Title>{info.Id}</Modal.Title>
       </Modal.Header>

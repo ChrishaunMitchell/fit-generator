@@ -1,11 +1,10 @@
-import {React, useContext, useRef} from 'react';
-import { ItemContext } from "./ItemContext";
-import { useEffect } from 'react';
+import {React, useContext, useRef, useEffect} from 'react';
+import { ItemContext } from "../Context/ItemContext";
 import axios from 'axios';
 import AnyAttribute, { asObject} from 'react-any-attr';
 import ItemSelection from './ItemSelection';
 import ImageModal from './ImageModal';
-import ResetButton from './ResetButton';
+import ResetButton from './Buttons/ResetButton';
 
 function ViewItem() {
     const {info, setinfo, show, setShow, itemValues, displayPics, setdisplayPics} = useContext(ItemContext);

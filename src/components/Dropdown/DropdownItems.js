@@ -1,7 +1,6 @@
 import {React, useContext} from 'react';
 import Dropdown from "./Dropdown";
-import { ItemContext} from './ItemContext';
-import {TypeOptions, TopOptions, BottomOptions, ShoeOptions, AccessoryOptions, ColorOptions} from "./ItemOptions";
+import { ItemContext} from '../../Context/ItemContext';
 
 function DropdownItems(props){
     const {itemValues, setitemValues} = useContext(ItemContext);

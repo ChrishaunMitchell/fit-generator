@@ -1,13 +1,14 @@
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState, useEffect} from "react";
 
-import { ItemContext } from './ItemContext';
-import MenuOptions from './MenuOptions';
-import AddItem from './AddItem';
-import ViewItem from './ViewItem';
-import BackButton from './BackButton';
-import GenerateFit from './GenerateFit';
-import { S3Context } from './S3Context';
+import { ItemContext } from './Context/ItemContext';
+import MenuOptions from './components/MenuOptions';
+import AddItem from './components/AddItem';
+import ViewItem from './components/ViewItem';
+import BackButton from './components/Buttons/BackButton';
+import GenerateFit from './components/GenerateFit';
+import { S3Context } from './Context/S3Context';
 import { S3Client } from "@aws-sdk/client-s3";
 import jwt_decode from "jwt-decode";
 
@@ -97,12 +98,13 @@ function App() {
   
   return (
     <div className="App">
+      <header className='App-header'>
       <div id="signInDiv"></div>
       { Object.keys(user).length===0 ? 
       <div>
       <h3>You must login first</h3>
       </div> :
-      <div>
+      <div width='80%'>
         <img src={user.picture}></img>
         <h3>{user.name}</h3>
         <button onClick={(e) => handleSignOut(e)}>Sign Out</button>
@@ -116,6 +118,7 @@ function App() {
       </S3Context.Provider>
       </div>
       }
+      </header>
     </div>
   );
 }

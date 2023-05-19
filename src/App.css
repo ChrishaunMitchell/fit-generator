@@ -50,6 +50,13 @@
   margin: 1rem;
 }
 
+button {
+  margin: 2rem;
+  display: inline-block;
+  color: #fff;
+  background-color: #6c7892;
+  border-color: #354158;
+}
 /* @keyframes App-logo-spin {
   from {
     transform: rotate(-10deg);

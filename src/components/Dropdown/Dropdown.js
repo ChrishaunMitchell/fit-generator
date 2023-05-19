@@ -142,9 +142,9 @@ const Dropdown = ({
         </div>
       </div>
       {showMenu && (
-        <div className="dropdown-menu">
+        <div className="dropdown-menu2">
           {isSearchable && (
-            <div className="search-box">
+            <div className="search-box2">
               <input onChange={onSearch} value={searchValue} ref={searchRef} />
             </div>
           )}
@@ -152,7 +152,7 @@ const Dropdown = ({
             <div
               onClick={() => onItemClick(option)}
               key={option.value}
-              className={`dropdown-item ${isSelected(option) && "selected"}`}
+              className={`dropdown-item2 ${isSelected(option) && "selected"}`}
             >
               {option.label}
             </div>

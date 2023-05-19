@@ -1,6 +1,5 @@
 import {React, useContext} from "react";
-import { ItemContext } from "./ItemContext";
-import ResetButton from "./ResetButton";
+import { ItemContext } from "../../Context/ItemContext";
 
 function BackButton() {
     const {resetitemValues, setshowMenu} = useContext(ItemContext);

@@ -1,6 +1,6 @@
 import React from "react";
 import ItemSelection from "./ItemSelection";
-import Upload from "./components/Upload";
+import Upload from "./Upload/Upload";
 
 function AddItem() {
     const handleSubmit = (e)=>{

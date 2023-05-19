@@ -1,8 +1,8 @@
 import React,{useState, useContext} from 'react';
 import axios from 'axios';
 import './Upload.css';
-import { S3Context } from '../S3Context';
-import { ItemContext } from '../ItemContext';
+import { S3Context } from '../../Context/S3Context';
+import { ItemContext } from '../../Context/ItemContext';
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 const Upload = (props) => {
@@ -75,8 +75,8 @@ const Upload = (props) => {
                 <ul className="e-upload-files">
                     <li className="e-upload-file-list">
                         <span className="e-file-container">
-                            <span className="e-file-name">{selectedFile.name}</span>
-                            <span className="e-file-size">{size}</span>
+                            {/* <span className="e-file-name">{selectedFile.name}</span> */}
+                            <span className="e-file-size">{size}<br></br></span>
                             <span className={ status.statusCode ? "e-file-status e-upload-success" : "e-file-status"}>{status.message}</span> 
                         </span>
                     </li>
@@ -95,7 +95,7 @@ const Upload = (props) => {
                     src={URL.createObjectURL(selectedFile)}
                 />
                 <br />
-                <button onClick={() => setSelectedFile(null)}>Remove</button>
+                <button onClick={() => setSelectedFile(null)}>Remove</button><br></br>
                 </div>
             )}
             <input

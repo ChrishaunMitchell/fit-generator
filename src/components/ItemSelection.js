@@ -1,8 +1,8 @@
 import React from "react";
-import { ItemContext } from "./ItemContext";
+import { ItemContext } from "../Context/ItemContext";
 import { useContext, useEffect } from "react";
-import Dropdown from "./Dropdown";
-import DropdownItems from "./DropdownItems";
+import Dropdown from "./Dropdown/Dropdown";
+import DropdownItems from "./Dropdown/DropdownItems";
 import {TypeOptions, TopOptions, BottomOptions, ShoeOptions, AccessoryOptions, ColorOptions} from "./ItemOptions";
 
 function ItemSelection(props) {
