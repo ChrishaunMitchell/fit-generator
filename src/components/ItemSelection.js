@@ -30,7 +30,7 @@ function ItemSelection(props) {
 
         <Dropdown isSearchable isMulti placeHolder="Color1..." options={ColorOptions}
           onChange={(value) => value[0] ? setitemValues({...itemValues, color1:value[0].value}):
-          setitemValues({...itemValues, color2:""})}
+          setitemValues({...itemValues, color1:""})}
         />
         <Dropdown isSearchable isMulti placeHolder="Color2..." options={ColorOptions}
           onChange={(value) => value[0] ? setitemValues({...itemValues, color2:value[0].value}):

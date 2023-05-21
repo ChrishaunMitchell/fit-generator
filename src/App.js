@@ -47,8 +47,17 @@ function App() {
       google.accounts.id.prompt();
     }
   },[]);
+  useEffect(()=>{
+    console.log('setting owner since user changed');
+    if(user && user.email){
+      console.log(user.email);
+      setitemValues({...itemValues,owner:user.email});
+    }
+  },[user])
+
   const [itemValues, setitemValues] = useState({
     Id: Math.floor(Math.random() * 9000),
+    owner: "",
     type: "",
     type2: "",
     designer: false,
@@ -67,8 +76,13 @@ function App() {
   const [info, setinfo] = useState({Id:1});
   const [show, setShow] = useState(false);
   function resetitemValues() {
+    let newOwner=""
+    if(user.email){
+      newOwner=user.email;
+    }
     setitemValues({
     Id: Math.floor(Math.random() * 9000),
+    owner: newOwner,
     type: "",
     type2: "",
     designer: false,
@@ -104,7 +118,7 @@ function App() {
       <div>
       <h3>You must login first</h3>
       </div> :
-      <div width='80%'>
+      <div >
         <img src={user.picture}></img>
         <h3>{user.name}</h3>
         <button onClick={(e) => handleSignOut(e)}>Sign Out</button>

@@ -5,8 +5,10 @@ import AnyAttribute, { asObject} from 'react-any-attr';
 import ItemSelection from './ItemSelection';
 import ImageModal from './ImageModal';
 import ResetButton from './Buttons/ResetButton';
+import { S3Context } from '../Context/S3Context';
 
 function ViewItem() {
+    const {user} = useContext(S3Context)
     const {info, setinfo, show, setShow, itemValues, displayPics, setdisplayPics} = useContext(ItemContext);
     
     const currentPic = useRef(0);
@@ -22,15 +24,18 @@ function ViewItem() {
         
         console.log(info);
     }
+    // useEffect(()=>{
+    //     console.log('effect1');
+    //     UpdateDisplay('?owner='+user.email);
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // },[itemValues])
     useEffect(()=>{
-        UpdateDisplay("");
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[itemValues])
-    useEffect(()=>{
+        console.log('effect2');
         UpdateDisplay(QList.current);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[show])
     useEffect(()=>{
+        console.log('effect3');
         setdisplayPics();
         // eslint-disable-next-line react-hooks/exhaustive-deps
      },[]);
@@ -50,6 +55,10 @@ function ViewItem() {
         e.preventDefault();
         console.log("Make api call");
         let qString = itemValues ? "?" : "";
+        if(itemValues.owner) {
+            if(qString!=="?") { qString += "&"; }
+            qString += "owner="+itemValues.owner;
+        }
         if(itemValues.type) {
             if(qString!=="?") { qString += "&"; }
             qString += "type="+itemValues.type;

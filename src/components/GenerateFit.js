@@ -3,8 +3,10 @@ import axios from 'axios';
 import { ItemContext } from '../Context/ItemContext';
 import AnyAttribute from 'react-any-attr';
 import { asObject } from 'react-any-attr';
+import { S3Context } from '../Context/S3Context';
 
 function GenerateFit(){
+    const {user} = useContext(S3Context);
     const {displayPics,setdisplayPics} = useContext(ItemContext);
     function PickRandom(item) {
         return item[Math.floor(Math.random()*item.length)];
@@ -12,15 +14,15 @@ function GenerateFit(){
     function Generate() {
         console.log('Select a top/bottom/shoe by random, then probability to add accessories');
         let allItems = [];
-        axios.get(`https://x3c6sahq93.execute-api.us-east-1.amazonaws.com/items?type=Top`)
+        axios.get(`https://x3c6sahq93.execute-api.us-east-1.amazonaws.com/items?owner=${user.email}&type=Top`)
         .then(response => {
-            allItems.push(PickRandom(response.data));
-            axios.get(`https://x3c6sahq93.execute-api.us-east-1.amazonaws.com/items?type=Bottom`)
+            if(response.data[0] != null) {allItems.push(PickRandom(response.data));}
+            axios.get(`https://x3c6sahq93.execute-api.us-east-1.amazonaws.com/items?owner=${user.email}&type=Bottom`)
             .then(response => {
-                allItems.push(PickRandom(response.data));
-                axios.get(`https://x3c6sahq93.execute-api.us-east-1.amazonaws.com/items?type=Shoes`)
+                if(response.data[0]!= null) {allItems.push(PickRandom(response.data));}
+                axios.get(`https://x3c6sahq93.execute-api.us-east-1.amazonaws.com/items?owner=${user.email}&type=Shoes`)
                 .then(response => {
-                    allItems.push(PickRandom(response.data));
+                    if(response.data[0]!= null) {allItems.push(PickRandom(response.data));}
                     setdisplayPics(allItems);
                 });
             });
