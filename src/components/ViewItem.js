@@ -5,10 +5,8 @@ import AnyAttribute, { asObject} from 'react-any-attr';
 import ItemSelection from './ItemSelection';
 import ImageModal from './ImageModal';
 import ResetButton from './Buttons/ResetButton';
-import { S3Context } from '../Context/S3Context';
 
 function ViewItem() {
-    const {user} = useContext(S3Context)
     const {info, setinfo, show, setShow, itemValues, displayPics, setdisplayPics} = useContext(ItemContext);
     
     const currentPic = useRef(0);

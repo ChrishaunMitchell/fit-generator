@@ -4,6 +4,7 @@ import './Upload.css';
 import { S3Context } from '../../Context/S3Context';
 import { ItemContext } from '../../Context/ItemContext';
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import Compressor from 'compressorjs';
 
 const Upload = (props) => {
     const {user, FitGenClient} = useContext(S3Context);
@@ -17,8 +18,16 @@ const Upload = (props) => {
         setSelectedFile(null);
         const file = event.target.files;
         if(!file) return;
-        setSelectedFile(file[0]);
-        console.log(selectedFile);
+        new Compressor(file[0], {
+            quality: 0.8, // 0.6 can also be used, but its not recommended to go below.
+            success: (compressedResult) => {
+              // compressedResult has the compressed file.
+              // Use the compressed file to upload the images to your server.        
+              //setCompressedFile(res)
+              console.log(compressedResult);
+              setSelectedFile(compressedResult);
+            },
+          });
         let newID= Date.now() + Math.floor(Math.random() * 9000);
         let newPic= `https://fit-generator-dev.s3.amazonaws.com/Images/${user.email}/${newID}`;
         setitemValues({...itemValues, Id: newID, pic: newPic})

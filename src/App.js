@@ -71,7 +71,6 @@ function App() {
   });
   const [displayPics, setdisplayPics] = useState(['https://comicvine.gamespot.com/a/uploads/original/11133/111335377/7083786-3602507891-hqdef.jpg','https://comicvine.gamespot.com/a/uploads/original/11133/111335377/7083786-3602507891-hqdef.jpg']);
   const [showMenu, setshowMenu] = useState("Main");
-  let MenuMap = "We'll display something"
 
   const [info, setinfo] = useState({Id:1});
   const [show, setShow] = useState(false);
